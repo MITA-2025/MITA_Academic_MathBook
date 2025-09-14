@@ -1,3 +1,6 @@
-# MITA 数学讲义 拓扑学基础
+# MITA 数学讲义 点集拓扑
 ## Notes on General Topology
-##### by JokerXin (MITA) 2025.09.13
+
+**Contributor**
+
+- JokerXin 周可信 2024级
