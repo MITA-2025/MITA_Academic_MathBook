@@ -1,19 +1,28 @@
 
 <!-- MITA 数学讲义 -->
 
-# 点集拓扑
+# 点集拓扑讲义
 ### Notes on General Topology
+
+---
+
+## Contributor
+
+- JokerXin 周可信 2024级
+
+---
 
 ## 目录
 
 - [拓扑空间](#拓扑空间)
     - [定义](#拓扑空间#定义)
-    - [拓扑的粗细](#拓扑空间#拓扑的粗细)
     - [拓扑基](#拓扑空间#拓扑基)
-    - [闭集](#拓扑空间#闭集)
     - [基本概念](#拓扑空间#基本概念)
     - [内部&闭包](#拓扑空间#内部&闭包)
-    - [开/闭映射&连续映射](#拓扑空间#开/闭映射&连续映射)
+    - [映射](#拓扑空间#映射)
+        - [开/闭映射](#拓扑空间#映射#开/闭映射)
+        - [连续映射](#拓扑空间#映射#连续映射)
+        - [商映射](#拓扑空间#映射#商映射)
     - [邻域](#拓扑空间#邻域)
     - [默认拓扑](#拓扑空间#默认拓扑)
         - [子空间](#拓扑空间#默认拓扑#子空间)
@@ -50,15 +59,20 @@
         - [特性](#拓扑不变量#局部紧致性#特性)
 - [度量空间](#度量空间)
     - [定义](#度量空间#定义)
+    - [基本概念](#度量空间#基本概念)
     - [诱导拓扑空间](#度量空间#诱导拓扑空间)
     - [默认拓扑的一致性](#度量空间#默认拓扑的一致性)
     - [完备性](#度量空间#完备性)
 - [$\mathbf{R}^{n}$ 上的拓扑](#R^n上的拓扑)
-    - [通常拓扑](#R^n上的拓扑#通常拓扑)
+    - [标准拓扑](#R^n上的拓扑#标准拓扑)
     - [上/下限拓扑 ( Sorgenfrey 直线 )](#R^n上的拓扑#上/下限拓扑(Sorgenfrey直线))
     - [K-拓扑](#R^n上的拓扑#K-拓扑)
 - [补充](#补充)
+    - [Sorgenfrey 平面](#补充#Sorgenfrey平面)
 - [参考资料](#参考资料)
+
+---
+---
 
 ## 拓扑空间 {#拓扑空间}
 
@@ -71,31 +85,69 @@
 - 并封闭性: $$\forall\ U\subseteq\tau\quad:\quad\bigcup_{A\in U}A\in\tau\ ;$$
 - 有限交封闭性: $$\forall\ A_{1},\cdots,A_{n}\in\tau\quad:\quad\bigcap_{k=1}^{n}A_{k}\in\tau\ .$$
 
-拓扑 $\tau$ 中的元素称为拓扑空间 $(X,\tau)$ 中的**开集**.
-
-**推论（平凡拓扑&离散拓扑）**
-设 $X$ 是集合, $X$ 上的**平凡拓扑** $\{\varnothing,X\}$ 和**离散拓扑** $2^{X}$ 都是 $X$ 上的拓扑.
-
-**「拓扑空间」的预设**
-
-- 设 $(X,\tau)$ , $(Y,\tau')$ , $(Z,\tau'')$ 是拓扑空间.
-
-在不引发歧义的情况下, 一般我们用集合符号 $X$ 来代表拓扑空间 $(X,\tau)$ .
-
-称某个拓扑空间 $(X,\tau)$ 是**非空**的, 当且仅当 $X$ 是非空的.
-
----
-
-### 拓扑的粗细 {#拓扑空间#拓扑的粗细}
+我们称某个拓扑空间 $(X,\tau)$ 是**非空**的, 当且仅当 $X$ 是非空的.
 
 **定义（拓扑的粗细）**
 设 $(X,\tau_{1}),(X,\tau_{2})$ 是拓扑空间, 称 $\tau_{1}$ **粗**于 $\tau_{2}$ 或 $\tau_{2}$ **细**于 $\tau_{1}$ , 当且仅当 $\tau_{1}\subseteq\tau_{2}$ .
 
-**推论（最粗/最细拓扑）**
-设 $X$ 是集合,
+我们称一个拓扑是满足某条件的**最粗/最细拓扑**, 当且仅当其满足该条件并且粗/细于任何满足该条件的拓扑.
 
-- $X$ 上的平凡拓扑 $\{\varnothing,X\}$ 粗于 $X$ 上的任何拓扑.
-- $X$ 上的离散拓扑 $2^{X}$ 细于 $X$ 上的任何拓扑.
+**定义（开集&闭集）**
+设 $(X,\tau)$ 是拓扑空间, 则称 $A\subseteq X$ 是
+
+- **开**的, 当且仅当 $A\in\tau$ ;
+- **闭**的, 当且仅当 $X\setminus A\in\tau$ .
+
+**定理（闭集的性质）**
+设 $(X,\tau)$ 是拓扑空间, 则其全体闭集构成的集合 $\tau'$ 具有
+
+- 非空性: $$\varnothing,X\in\tau'\ ;$$
+<!--begin-->
+    - **证明**
+    注意到 $X\setminus\varnothing=X$ 和 $X\setminus X=\varnothing$ , 这显然成立.
+<!--end-->
+- 交封闭性: $$\forall\ U\subseteq\tau'\quad:\quad\bigcap_{A\in U}A\in\tau'\ ;$$
+<!--begin-->
+    - **证明**
+    由 De Morgan 律可知 $$X\setminus\left(\bigcap_{A\in U}A\right)=\bigcup_{A\in U}(X\setminus A)\ ,$$ 等式右侧每个 $X\setminus A$ 都是开集, 因此由拓扑的并封闭性知上式是开集, 从而 $\bigcap_{A\in U}A$ 是闭集.
+<!--end-->
+- 有限并封闭性: $$\forall\ A_{1},\cdots,A_{n}\in\tau'\quad:\quad\bigcup_{k=1}^{n}A_{k}\in\tau'\ .$$
+<!--begin-->
+    - **证明**
+    由 De Morgan 律可知 $$X\setminus\left(\bigcup_{k=1}^{n}A_{k}\right)=\bigcap_{k=1}^{n}(X\setminus A_{k})\ ,$$ 等式右侧每个 $X\setminus A_{k}$ 都是开集, 因此由拓扑的有限交封闭性知上式是开集, 从而 $\bigcup_{k=1}^{n}A_{k}$ 是闭集.
+<!--end-->
+
+上述定理表明开集和闭集是对偶的概念, 因而我们可以通过闭集构造出对偶的拓扑空间——其拓扑中的元素均为闭集, 所有其他的结论可由完全类似的方式导出.
+
+对于任意集合 $X$ , 下面我们给出几种基本的拓扑结构, 其中有限补拓扑和可数补拓扑分别基于 $X$ 的有限子集和至多可数子集可以被视为闭集的特点.
+
+**定义（基本拓扑）**
+设 $X$ 是集合, $X$ 上的
+
+- **平凡拓扑**为 $\{\varnothing,X\}$ ;
+- **离散拓扑**为 $2^{X}$ ;
+- **有限补拓扑**为 $X$ 的全体有限子集的补集构成的集合;
+- **可数补拓扑**为 $X$ 的全体至多可数子集的补集构成的集合.
+
+**推论（基本拓扑是拓扑）**
+设 $X$ 是集合, $X$ 上的
+
+- 平凡拓扑是 $X$ 上的最粗拓扑;
+- 离散拓扑是 $X$ 上的最细拓扑;
+- 有限补拓扑是 $X$ 上的拓扑;
+- 可数补拓扑是 $X$ 上的拓扑.
+
+**定理（拓扑族的最粗/最细拓扑）**
+设对任意指标 $i\in I$ , $\tau_{i}$ 都是 $X$ 上的拓扑, 则
+
+- $\tau=\bigcap_{i\in I}\tau_{i}$ 是粗于一切 $\tau_{i}$ 的最细拓扑.
+- 由子基 $\mathcal{S}=\bigcup_{i\in I}\tau_{i}$ 生成的拓扑是细于一切 $\tau_{i}$ 的最粗拓扑.
+
+**「拓扑空间」的预设**
+设 $(X,\tau_{X})$ , $(Y,\tau_{Y})$ , $(Z,\tau_{Z})$ 是拓扑空间.
+
+**「拓扑空间」的约定**
+在不引发歧义的情况下, 一般我们用集合符号来代表拓扑空间, 即 $X$ 代表 $(X,\tau)$ .
 
 ---
 
@@ -116,7 +168,17 @@
 分别取 $\mathcal{B}'=\varnothing$ 和 $\mathcal{B}'=\mathcal{B}$ , 立即得 $\varnothing\in\tau_{\mathcal{B}}$ 和 $X\in\tau_{\mathcal{B}}$ .
 对任意 $A_{1},A_{2}\in\tau_{\mathcal{B}}$ , 分别存在 $\mathcal{B}'_{1},\mathcal{B}'_{2}\subseteq\mathcal{B}$ 使得 $A_{1}=\bigcup_{A\in\mathcal{B}'_{1}}$ 和 $A_{2}=\bigcup_{A\in\mathcal{B}'_{2}}$ , 于是
 
-由此称 $\mathcal{B}$ 为 $\tau_{\mathcal{B}}$ 的基.
+由此我们也称 $\mathcal{B}$ 为 $\tau_{\mathcal{B}}$ 的基.
+
+**定理（基的性质）**
+设 $\mathcal{B}\subseteq2^{X}$ 是 $\tau$ 的基, 则 $\tau$ 是 $X$ 上包含 $\mathcal{B}$ 的最粗拓扑.
+
+**定理（拓扑的基比较法）**
+设 $\mathcal{B}_{1},\mathcal{B}_{2}$ 是 $X$ 上的基, 则 $\tau_{1}$ 粗于 $\tau_{2}$ , 当且仅当对任意 $B\in\mathcal{B}_{1}$ 都存在 $\mathcal{B}'\subseteq\mathcal{B}_{2}$ 使得 $$B=\bigcup_{A\in\mathcal{B}'}A\ ,$$ 其中 $\tau_{1}$ 和 $\tau_{2}$ 分别为 $\mathcal{B}_{1}$ 和 $\mathcal{B}_{2}$ 生成的拓扑.
+
+**证明**
+先证$\implies$ . 对任意 $B\in\mathcal{B}_{1}$ , 我们有 $B\in\tau_{2}$ , 由 $\mathcal{B}_{2}$ 生成 $\tau_{2}$ 可知存在 $\mathcal{B}'\subseteq\mathcal{B}_{2}$ 使得 $$B=\bigcup_{A\in\mathcal{B}'}A\ ,$$ 这就完成了证明.
+再证$\impliedby$ . 
 
 **定义（子基）**
 设 $X$ 是集合, 称 $\mathcal{S}\subseteq2^{X}$ 是 $X$ 上的**子基**, 当且仅当其具有
@@ -126,32 +188,10 @@
 **定理（子基生成基）**
 设 $X$ 是集合, 若 $\mathcal{S}\subseteq2^{X}$ 是 $X$ 上的子基, 则 $\mathcal{S}$ 生成的基 $$\mathcal{B}_{\mathcal{S}}=\left\{\bigcap_{k=1}^{n}A_{k}\ \bigg|\ A_{1},\cdots,A_{n}\in\mathcal{S}\right\}$$ 是 $X$ 上的基.
 
-由此称 $\mathcal{S}$ 为 $\mathcal{B}_{\mathcal{S}}$ 的子基和 $\tau_{\mathcal{B}_{\mathcal{S}}}$ 的子基, 并且称 $\tau_{\mathcal{B}_{\mathcal{S}}}$ 为 $\mathcal{S}$ 生成的拓扑.
+由此我们也称 $\mathcal{S}$ 为 $\mathcal{B}_{\mathcal{S}}$ 的子基和 $\tau_{\mathcal{B}_{\mathcal{S}}}$ 的子基, 并且称 $\tau_{\mathcal{B}_{\mathcal{S}}}$ 为 $\mathcal{S}$ 生成的拓扑.
 
 **定理（子基的性质）**
-设 $\mathcal{S}\subseteq2^{X}$ 是 $\tau$ 的子基, 则
-
-- $\tau$ 是 $X$ 上包含 $\mathcal{S}$ 的最粗拓扑.
-
----
-
-### 闭集 {#拓扑空间#闭集}
-
-开集可以导出与之对偶的概念.
-
-**定义（闭集）**
-设 $A\subseteq X$ , 称 $A$ 是**闭集**当且仅当 $X\setminus A$ 是开集.
-
-**推论（平凡闭集）**
-$\varnothing$ 和 $X$ 是闭集.
-
-> 注意到开集和闭集的概念是互补等价的, 即我们可以用闭集来定义拓扑, 即需满足下面三则性质:
->
-> - 非空性: $$\varnothing,X\in\tau\ ;$$
-> - 交封闭性: $$\forall\ U\subseteq\tau\quad:\quad\bigcap_{A\in U}A\in\tau\ ;$$
-> - 有限并封闭性: $$\forall\ A_{1},\cdots,A_{n}\in\tau\quad:\quad\bigcup_{k=1}^{n}A_{k}\in\tau\ .$$
->
-> 此时 $\varnothing$ 和 $X$ 是开集则作为该定义下的推论.
+设 $\mathcal{S}\subseteq2^{X}$ 是 $\tau$ 的子基, 则 $\tau$ 是 $X$ 上包含 $\mathcal{S}$ 的最粗拓扑.
 
 ---
 
@@ -215,9 +255,8 @@ $\varnothing$ 和 $X$ 是闭集.
 - $$\overline{A}\subseteq\overline{B}\ .$$
 
 **证明**
-
 - 对任意 $x\in\operatorname{int}A$ , 由内点的定义知存在开集 $O$ 使得 $x\in O$ 且 $O\subseteq A$ , 此时同样有 $O\subseteq B$ , 因此 $x$ 也是 $B$ 中的内点, 即 $x\in\operatorname{int}B$ . 这就证明了 $\operatorname{int}A\subseteq\operatorname{int}B$ .
-- 对任意
+- 
 
 **定理（内部与闭包的对偶性）**
 设 $A\subseteq X$ , 则
@@ -239,20 +278,22 @@ $\varnothing$ 和 $X$ 是闭集.
 
 ---
 
-### 开/闭映射&连续映射 {#拓扑空间#开/闭映射&连续映射}
+### 映射 {#拓扑空间#映射}
 
 使用下面将给出的定义的前提是我们在 $X$ 和 $Y$ 上选取了默认拓扑, 即作为显式声明的拓扑或被选取了默认拓扑的集合的子拓扑/积拓扑.
 
+#### 开/闭映射 {#拓扑空间#映射#开/闭映射}
+
 **定义（开/闭映射）**
-称 $f:X\to Y$ 是**开/闭**的, 当且仅当对任意 $X$ 中的开/闭集 $A$ , $f(A)$ 都是 $Y$ 中的开/闭集, 即 $$\forall\ A\subseteq X\quad:\quad A\in\tau_{X}\implies f(A)\in\tau_{Y}\ .$$
+称 $f:X\to Y$ 是**开/闭**的, 当且仅当对任意 $X$ 中的开/闭集 $A$ , $f(A)$ 都是开/闭的, 即 $$\forall\ A\subseteq X\quad:\quad A\in\tau_{X}\implies f(A)\in\tau_{Y}\ .$$
 
 **推论（开双射$\iff$闭双射）**
 对任意双射 $f$ , $f$ 是开的当且仅当 $f$ 是闭的.
 
-对于连续映射 $f$ , 我们没有类似的结论.
+#### 连续映射 {#拓扑空间#映射#连续映射}
 
 **定义（连续映射）**
-称 $f:X\to Y$ 是**连续**的, 当且仅当对任意 $Y$ 中的开集 $A$ , $f^{-1}(A)$ 都是 $X$ 中的开集, 即 $$\forall\ A\subseteq Y\quad:\quad A\in\tau_{Y}\implies f^{-1}(A)\in\tau_{X}\ .$$
+称映射 $f:X\to Y$ 是**连续**的, 当且仅当对任意 $Y$ 中的开集 $A$ , $f^{-1}(A)$ 都是开集, 即 $$\forall\ A\subseteq Y\quad:\quad A\in\tau_{Y}\implies f^{-1}(A)\in\tau_{X}\ .$$
 
 **推论（特殊的连续映射）**
 
@@ -260,12 +301,42 @@ $\varnothing$ 和 $X$ 是闭集.
 - 常映射 $f:X\to Y,x\mapsto y$ 是连续的, 其中 $y\in Y$ .
 
 **定理（连续映射的等价条件）**
-设 $X,Y$ 是拓扑空间, 则 $f:X\to Y$ 是连续的当且仅当
-- 对任意 $Y$ 中的闭集 $A$ , $f^{-1}(A)$ 都是 $X$ 中的闭集, 即 $$\forall\ A\subseteq Y\quad:\quad A\in\{Y-A\ |\ A\in\tau_{Y}\}\implies f^{-1}(A)\in\{X-A\ |\ A\in\tau_{X}\}\ .$$
-- 对任意 $\mathcal{B}$ 中的开集 $A$ , $f^{-1}(A)$ 都是 $X$ 中的闭集, 即 $$\forall\ A\subseteq Y\quad:\quad A\in\mathcal{B}\implies f^{-1}(A)\in\tau_{X}\ ,$$ 其中 $\mathcal{B}$ 是 $\tau_{Y}$ 的基.
+映射 $f:X\to Y$ 是连续的当且仅当
+
+- 对任意 $Y$ 中的闭集 $A$ , $f^{-1}(A)$ 都是闭的.
+- 对任意 $A\in\mathcal{B}$ , $f^{-1}(A)$ 都是 $X$ 中的开集, 其中 $\mathcal{B}$ 是 $\tau_{Y}$ 的基.
+- 对任意 $A\in\mathcal{S}$ , $f^{-1}(A)$ 都是 $X$ 中的开集, 其中 $\mathcal{S}$ 是 $\tau_{Y}$ 的子基.
 
 **定理（连续映射的复合）**
 若 $f:X\to Y$ 和 $g:Y\to Z$ 是连续的, 则 $g\circ f:X\to Z$ 是连续的.
+
+<!--begin-->
+**证明**
+对任意 $Z$ 中的开集 $A$ , 我们有 $g^{-1}(A)$ 是 $Y$ 中的开集, 从而 $$(g\circ f)^{-1}(A)=f^{-1}(g^{-1}(A))$$ 是 $X$ 中的开集.
+<!--end-->
+
+#### 商映射 {#拓扑空间#映射#商映射}
+
+下面我们给出一种比连续性更强的性质: 映射 $f:X\to Y$ 是商映射将表明 $Y$ 中的开集完全由其原像在 $X$ 中的开闭性决定.
+
+若已经为集合 $X$ 和 $Y$ 中的一者赋予了拓扑了结构, 则商映射 $f:X\to Y$ 可以立刻在另一者上诱导出使得 $f$ 连续的最粗/最细拓扑.
+
+**定义（商映射）**
+称满射 $f:X\to Y$ 是**商映射**, 当且仅当对任意 $A\subseteq Y$ , $A$ 是开集当且仅当 $f^{-1}(A)$ 是开集.
+
+**推论（商映射是连续的）**
+任何商映射都是连续的.
+
+**定理（商映射的等价条件）**
+映射 $f:X\to Y$ 是商映射, 当且仅当对任意 $A\subseteq Y$ , $A$ 是闭的当且仅当 $f^{-1}(A)$ 是闭的.
+
+**定理（商映射的复合）**
+任何商映射的复合都是商映射.
+
+<!--begin-->
+**证明**
+由复合映射的恒等式 $$p^{-1}(q^{-1}(U))=(q\circ p)^{-1}(U)$$ 易证.
+<!--end-->
 
 ---
 
@@ -279,11 +350,12 @@ $\varnothing$ 和 $X$ 是闭集.
 
 $x$ 和 $A$ 的全体邻域构成的集合分别称为其**邻域系**.
 
-**推论（邻域的等价性）**
-设 $x\in X$ , 则 $U$ 是 $x$ 的邻域当且仅当 $U$ 是 $\{x\}$ 的邻域.
-
 **定义（邻域基）**
 设 $x\in X$ 并且 $\mathcal{B}$ 是 $x$ 的邻域系的子集, 称 $\mathcal{B}$ 是 $x$ 的**邻域基**当且仅当对 $x$ 的任意邻域 $N$ , 都存在 $B\in\mathcal{B}$ 使得 $B\subseteq N$ .
+
+注意, 并不是所有邻域都可以表示为邻域基的交或并, 这与拓扑基有所不同.
+
+一般来说, 在某定义/定理中将邻域和开邻域的概念替换, 不会对其表述产生影响, 从而开邻域的存在性与邻域的存在性等价, 对于这类定义/定理, 我们一般用邻域的概念对其加以表述以增大应用效用, 而闭邻域则不同.
 
 ---
 
@@ -296,17 +368,43 @@ $x$ 和 $A$ 的全体邻域构成的集合分别称为其**邻域系**.
 **定义（子拓扑）**
 $A\subseteq X$ 上的**子拓扑**定义为 $$\{A\cap B\ |\ B\in\tau\}\ .$$
 
-**推论（子空间）**
+**推论（子拓扑是拓扑）**
 设 $A\subseteq X$ , 则 $X$ 的子空间 $(A,\tau_{A})$ 是拓扑空间, 其中 $\tau_{A}$ 是 $A$ 上的子拓扑.
 
-**推论（自身作为子空间）**
-$$\tau=\tau_{X}\ ,$$ 其中 $\tau_{X}$ 是 $X$ 自身上的子拓扑.
+**推论（子空间的子空间）**
+设 $A$ 是 $X$ 的子空间, 则 $A$ 的子空间是 $X$ 的子空间.
+
+**推论（子拓扑的粗细）**
+设 $(X,\tau_{1})$ 和 $(X,\tau_{2})$ 是拓扑空间, 若 $\tau_{1}$ 粗于 $\tau_{2}$ , 则 $\tau_{A1}$ 粗于 $\tau_{A2}$ , 其中 $\tau_{A1}$ 和 $\tau_{A2}$ 分别为 $A\subseteq X$ 上关于 $(X,\tau_{1})$ 和 $(X,\tau_{2})$ 的子拓扑.
+
+下面的定理刻画了子空间中的闭集, 因而也可以视为子空间的对偶定义方式.
+
+**定理（子空间中的闭集）**
+设 $A$ 是 $X$ 的子空间, 则 $C\subseteq A$ 是 $A$ 中的闭集, 当且仅当存在 $X$ 中的闭集 $B$ 使得 $C=A\cap B$ .
 
 **定理（子拓扑的性质）**
-设 $A\subseteq X$ , 则
+设 $A\subseteq X$ , 设 $\tau_{A}$ 为 $A$ 上的子拓扑, 则
 
 - $\tau_{A}$ 是 $A$ 上使得嵌入映射 $i:A\to X,x\mapsto x$ 连续的最粗拓扑.
 - $\tau_{A}$ 是 $A$ 上使得对任意连续映射 $f:X\to Y$ 都有 $f\big|_{A}:A\to Y$ 连续的最粗拓扑.
+- $\tau_{A}$ 是 $A$ 上使得对任意连续映射 $f:X\to Y$ 都有 $f\big|_{A}:A\to f(A)$ 连续的最粗拓扑.
+
+**定理（子空间中的商映射）**
+设 $p:X\to Y$ 是商映射, 并且 $A\subseteq X$ 在 $p$ 下饱和,
+
+- 若 $A$ 是 $X$ 中的开集, 则 $p\big|_{A}:A\to p(A)$ 是商映射.
+- 若 $A$ 是 $X$ 中的闭集, 则 $p\big|_{A}:A\to p(A)$ 是商映射.
+- 若 $p$ 是开的, 则 $p\big|_{A}:A\to p(A)$ 是商映射.
+- 若 $p$ 是闭的, 则 $p\big|_{A}:A\to p(A)$ 是商映射.
+
+<!--begin-->
+**证明**
+我们已经知道 $p\big|_{A}$ 无论如何都是连续的. 由 $A$ 在 $p$ 下饱和, 容易验证有 $$p^{-1}(V)=p\big|_{A}^{-1}(V)$$ 对一切 $V\subseteq p(A)$ 成立以及 $$p(A\cap V)=p(A)\cap p(V)$$ 对一切 $V\subseteq X$ 成立. 接下来我们需要分别证明在各个条件下有: 对任意 $V\subseteq p(A)$ , $p\big|_{A}^{-1}(V)$ 是 $A$ 中的开集蕴涵 $V$ 是 $p(A)$ 中的开集.
+- 若 $A$ 是 $X$ 中的开集, 对满足 $p\big|_{A}^{-1}(V)$ 是 $A$ 中的开集的任意 $V\subseteq p(A)$ , $p\big|_{A}^{-1}(V)$ 同时为 $X$ 中的开集, 也即 $p^{-1}(V)$ 是 $X$ 中的开集, 根据 $p$ 是商映射可知 $V$ 是 $Y$ 中的开集, 从而 $V$ 也必为子空间 $p(A)$ 中的开集.
+- 若 $A$ 是 $X$ 中的闭集, 由商映射的等价条件即可完成证明.
+- 若 $p$ 是开的, 对满足 $p\big|_{A}^{-1}(V)$ 是 $A$ 中的开集的任意 $V\subseteq p(A)$ , 存在 $X$ 中的开集 $U$ 使得 $p\big|_{A}^{-1}(V)=A\cap U$ , 也即 $p^{-1}(V)=A\cap U$ , 而 $$V=p(p^{-1}(V))=p(A\cap U)=p(A)\cap p(U)\ ,$$ 其中 $p(U)$ 是 $Y$ 中的开集,因此 $V$ 是 $p(A)$ 中的开集.
+- 若 $p$ 是闭的, 由商映射的等价条件即可完成证明.
+<!--end-->
 
 #### 积空间 {#拓扑空间#默认拓扑#积空间}
 
@@ -319,13 +417,15 @@ $$\tau=\tau_{X}\ ,$$ 其中 $\tau_{X}$ 是 $X$ 自身上的子拓扑.
 箱拓扑可以为拓扑空间 $X$ 的任何子集的笛卡尔积提供简单的拓扑结构, 但其在许多性质上往往不够理想, 因为其冗余地包含了由“原子开集”的无限交, 这就促使我们在该笛卡尔积上探究更粗的拓扑——积拓扑.
 
 **定义（积拓扑）**
-设对任意指标 $i\in I$ , $(X_{i},\tau_{i})$ 都是拓扑空间, 则 $\prod_{i\in I}X_{i}$ 上的**积拓扑**定义为子基 $$\left\{p_{i}^{-1}(A_{i})\ |\ i\in I,A_{i}\in\tau_{i}\right\}$$ 生成的拓扑, 其中 $p_{i}$ 为指标 $i$ 的投影拓扑, 也即基 $$\left\{\prod_{i\in I}A_{i}\ \bigg|\ \forall\ i\in I:A_{i}\in\tau_{i}\ ,\ \#\{i\in I\ |\ A_{i}\subset X_{i}\}<+\infty\right\}$$ 生成的拓扑.
+设对任意指标 $i\in I$ , $(X_{i},\tau_{i})$ 都是拓扑空间, 则 $\prod_{i\in I}X_{i}$ 上的**积拓扑**定义为子基 $$\left\{p_{i}^{-1}(A_{i})\ |\ i\in I\ ,\ \forall\ i\in I:A_{i}\in\tau_{i}\right\}$$ 生成的拓扑, 其中 $p_{i}$ 为指标 $i$ 的投影拓扑, 也即基 $$\left\{\prod_{i\in I}A_{i}\ \bigg|\ \forall\ i\in I:A_{i}\in\tau_{i}\ ,\ \#\{i\in I\ |\ A_{i}\ne X_{i}\}<+\infty\right\}$$ 生成的拓扑.
 
-**推论（积空间）**
+**推论（积拓扑是拓扑）**
 设对任意指标 $i\in I$ , $X_{i}$ 都是拓扑空间, 则 $\prod_{i\in I}X_{i}$ 的积空间 $$\left(\prod_{i\in I}X_{i},\tau_{I}\right)$$ 是拓扑空间, 其中 $\tau_{I}$ 为 $\prod_{i\in I}X_{i}$ 上的积拓扑.
 
+对于拓扑空间的积, 我们选择积拓扑而不是箱拓扑, 是因为积拓扑不会随意允许分量决定其为何而开, 这为积空间带来了更多优秀的性质.
+
 **定理（积拓扑的性质）**
-设 $W$ 是拓扑空间, 并且对任意指标 $i\in I$ , $X_{i}$ 是拓扑空间, 设 $\tau_{I}$ 为 $\prod_{i\in I}X_{i}$ 上的积拓扑, 并记 $$p_{i}:\prod_{j\in I}X_{j}\to X_{i}$$ 表示指标 $i$ 的投影映射, 则
+设 $W$ 是拓扑空间, 并且对任意指标 $i\in I$ , $X_{i}$ 是拓扑空间, 令 $\tau_{I}$ 表示 $\prod_{i\in I}X_{i}$ 上的积拓扑, 并令 $$p_{i}:\prod_{j\in I}X_{j}\to X_{i}$$ 表示指标 $i$ 的投影映射, 则
 
 - $\tau_{I}$ 是 $\prod_{i\in I}X_{i}$ 上使得对任何 $i\in I$ 都有 $p_{i}$ 连续的最粗拓扑.
 - $\tau_{I}$ 是 $\prod_{i\in I}X_{i}$ 上使得 $f:W\to\prod_{i\in I}X_{i}$ 连续等价于对任意 $i\in I$ 都有 $p_{i}\circ f$ 连续的最细拓扑.
@@ -337,7 +437,7 @@ $$\tau=\tau_{X}\ ,$$ 其中 $\tau_{X}$ 是 $X$ 自身上的子拓扑.
 > 例如, 对实心矩形采用不同的“粘连”可以分别得到**环面**和 **Klein 瓶**, 其中 Klein 瓶不与 $\mathbf{R}^{3}$ 的任何子空间同胚. 具体的“粘连”如图所示: ![](Pictures/环面作为商空间.png)![](Pictures/Klein瓶作为商空间.png)
 
 **定义（商拓扑）**
-$X$ 在等价关系 $\sim$ 下的商集 $\widetilde{X}$ 上的**商拓扑**定义为 $$\left\{A\subseteq\widetilde{X}\ |\ \pi^{-1}(A)\in\tau\right\}\ ,$$ 其中 $\pi:X\to\widetilde{X}$ 表示商映射.
+$X$ 在等价关系 $\sim$ 下的商集 $\widetilde{X}$ 上的**商拓扑**定义为 $$\left\{A\subseteq\widetilde{X}\ |\ \pi^{-1}(A)\in\tau\right\}\ ,$$ 其中 $\pi:X\to\widetilde{X}$ 为其对应的商映射, 即将每个 $x\in X$ 映成其所在等价类的映射.
 
 **推论（商空间）**
 $X$ 的商空间 $(\widetilde{X},\tau_{\sim})$ 是拓扑空间, 其中 $\widetilde{X}$ 为 $X$ 在等价关系 $\sim$ 下的商集, $\tau_{\sim}$ 是 $\widetilde{X}$ 上的商拓扑.
@@ -366,8 +466,6 @@ $X$ 的商空间 $(\widetilde{X},\tau_{\sim})$ 是拓扑空间, 其中 $\widetil
 下面的定理保证了作为相同的集合, 子集的积和积的子集也具有相同的默认拓扑, 从而这些拓扑空间所选取的拓扑都是明确的.
 
 **定理（子空间的积拓扑$\iff$积空间的子拓扑）**
-
----
 
 ---
 
@@ -436,19 +534,17 @@ $X$ 的商空间 $(\widetilde{X},\tau_{\sim})$ 是拓扑空间, 其中 $\widetil
 - **完全 T~2~** 的或**完全 Hausdorff** 的, 当且仅当
     - 点与点 函数可分离: 对任意不同的 $x,y\in X$ , 存在连续映射 $f:X\to\mathbf{R}$ 使得 $f(x)=0$ 且 $f(y)=1$ .
 - **正则** 的, 当且仅当
-    - 点与闭集 邻域可分离: 对任意闭集 $A\subseteq X$ 和 $x\in X\setminus A$ , 存在 $A$ 的邻域 $U_{A}$ 和 $x$ 的邻域 $U_{x}$ 使得 $U_{A}\cap U_{x}=\varnothing$ .
+    - 点与闭集 邻域可分离: 对任意闭集 $A\subseteq X$ 和 $x\in X\setminus A$ , 存在 $x$ 的邻域 $U_{x}$ 和 $A$ 的邻域 $U_{A}$ 使得 $U_{x}\cap U_{A}=\varnothing$ .
 - **T~3~** 的, 当且仅当 $X$ 是 T~0~ 正则空间.
 - **完全正则** 的, 当且仅当
     - 点与闭集 函数可分离: 对任意闭集 $A\subseteq X$ 和 $x\in X\setminus A$ , 存在连续映射 $f:X\to\mathbf{R}$ 使得 $f(x)=0$ 且 $f(A)=\{1\}$ .
 - **T~3½~** 的或 **Tychonoff** 的, 当且仅当 $X$ 是 T~0~ 完全正则空间.
 - **正规** 的, 当且仅当
-    - 闭集与闭集 邻域可分离: 对任意不同的闭集 $A,B\subseteq X$ , 存在 $A$ 的邻域 $U_{A}$ 和 $B$ 的邻域 $U_{B}$ 使得 $U_{A}\cap U_{B}=\varnothing$ .
+    - 闭集与闭集 邻域可分离: 对任意闭集 $A,B\subseteq X$ , 若 $A\cap B=\varnothing$ , 则存在 $A$ 的邻域 $U_{A}$ 和 $B$ 的邻域 $U_{B}$ 使得 $U_{A}\cap U_{B}=\varnothing$ .
 - **T~4~** 的, 当且仅当 $X$ 是 T~1~ 正规空间.
 - **完全正规** 的, 当且仅当
-    - 集合与集合 邻域可分离: 对任意不同的集合 $A,B\subseteq X$ , 存在 $A$ 的邻域 $U_{A}$ 和 $B$ 的邻域 $U_{B}$ 使得 $U_{A}\cap U_{B}=\varnothing$ .
 - **T~5~** 的, 当且仅当 $X$ 是 T~1~ 完全正规空间.
 - **完美正规** 的, 当且仅当
-    - 闭集与闭集 函数完全分离: 对任意不同的闭集 $A,B\subseteq X$ , 存在连续映射 $f:X\to\mathbf{R}$ 使得 $f^{-1}(\{0\})=A$ 且 $f^{-1}(\{1\})=B$ .
 - **T~6~** 的, 当且仅当 $X$ 是 T~1~ 完美正规空间.
 
 #### 判定准则 {#拓扑不变量#分离性#判定准则}
@@ -480,25 +576,43 @@ $X$ 的商空间 $(\widetilde{X},\tau_{\sim})$ 是拓扑空间, 其中 $\widetil
 
 - $X$ 是 Kolmogorov 的, 当且仅当
     - $$\forall\ x,y\in X\quad:\quad x=y\iff\overline{\{x\}}=\overline{\{y\}}\ .$$
+        <!--begin-->
         - **证明 Kolmogorov$\implies$该条件**
         1. 若 $x=y$ , 则显然有 $\overline{\{x\}}=\overline{\{y\}}$ .
         2. 若 $x\ne y$ , 则不妨设存在 $x$ 的邻域 $U_{x}$ 使得 $y\notin U_{x}$ , 此时 $x\notin\overline{\{y\}}$ , 但 $x\in\overline{\{x\}}$ , 于是 $\overline{\{x\}}\ne\overline{\{y\}}$ .
         - **证明 该条件$\implies$Kolmogorov**
         对任意不同的 $x,y\in X$ , 由该条件可知 $\overline{\{x\}}\ne\overline{\{y\}}$ , 这表明存在某个仅作为 $x$ 与 $y$ 其中一者的邻域的 $U$ , 从而 $X$ 是 Kolmogorov 的.
+        <!--end-->
 - $X$ 是 Fréchet 的, 当且仅当
     - 对任意不同的 $x,y\in X$ , $\{x\}$ 和 $\{y\}$ 可分离.
+        <!--begin-->
         - **证明**
         对任意不同的 $x,y\in X$ , $\{x\}\cap\overline{\{y\}}=\varnothing$ 和 $\{y\}\cap\overline{\{x\}}=\varnothing$ 分别等价于 $x\notin\overline{\{y\}}$ 和 $y\notin\overline{\{x\}}$ , 这又分别等价于存在仅作为 $x$ 的邻域的 $U_{x}$ 和仅作为 $y$ 的邻域的 $U_{y}$ . 于是任意不同的两点可分离等价于空间是 Fréchet 的.
+        <!--end-->
     - 对任意 $x\in X$ , $\{x\}$ 是闭的.
+        <!--begin-->
         - **证明 Fréchet$\implies$该条件**
         给定任意 $x\in X$ , 对任意与之不同的 $y\in X$ , 由第一个等价条件可知 $y\notin\overline{\{x\}}$ , 从而 $\overline{\{x\}}=\{x\}$ , 这就证明了 $\{x\}$ 是闭的.
         - **证明 该条件$\implies$Fréchet**
         对任意不同的 $x,y\in X$ , 我们有 $$\{x\}\cap\overline{\{y\}}=\{x\}\cap\{y\}=\varnothing\ ,$$ $$\{y\}\cap\overline{\{x\}}=\{y\}\cap\{x\}=\varnothing\ ,$$ 于是 $\{x\}$ 与 $\{y\}$ 可分离, 从而根据第一个等价条件知 $X$ 是 Fréchet 的.
-    - 自身作为全体邻域的交: 对任意 $x\in X$ , $x$ 的全体邻域的交集为 $\{x\}$ .
-        - **证明 Fréchet$\implies$该条件**
-        给定任意 $x\in X$ , 对任意与之不同的 $y\in X$ , $X$ 是 Fréchet 的表明 $y$ 必定不属于某个 $x$ 的邻域, 因此只有 $x$ 同时属于其自身的一切邻域, 也即 $x$ 的全体邻域的交集为 $\{x\}$ .
-        - **证明 该条件$\implies$Fréchet**
-        对任意不同的 $x,y\in X$ , $x$ 的全体邻域的交集为 $\{x\}$ 表明 $y$ 不属于某个 $x$ 的邻域, 同样地 $x$ 不属于某个 $y$ 的邻域, 因此 $X$ 是 Fréchet 的.
+        <!--end-->
+    - 对任意 $x\in X$ , $x$ 的全体邻域的交集为 $\{x\}$ .
+- $X$ 是正则的, 当且仅当
+    - 对任意 $x\in X$ , $x$ 的每个邻域 $U$ 都包含 $x$ 的某个闭邻域 $U'$ .
+        <!--begin-->
+        - **证明 正则$\implies$该条件**
+        根据定义, $x$ 的邻域 $U$ 必定包含 $x$ 的开邻域 $U_{0}$ , 对 $x$ 和闭集 $X\setminus U_{0}$ 应用正则性, 可以分别得到 $x$ 和 $X\setminus U_{0}$ 的开邻域 $U_{1}$ 和 $U_{2}$ 使得 $U_{1}\cap U_{2}=\varnothing$ , 显然 $X\setminus U_{2}$ 是 $x$ 的闭邻域, 接下来我们证明其包含于 $U$ , 从而这就是我们要找的 $U'$ . 对任意 $y\in X\setminus U_{2}$ , 因为 $X\setminus U_{0}\subseteq U_{2}$ , 所以 $y\in U_{0}$ , 进一步可得 $y\in U$ , 这就完成了证明.
+        - **证明 该条件$\implies$正则**
+        对任意闭集 $A\subseteq X$ 和 $x\in X\setminus A$ , 考虑 $x$ 的开邻域 $X\setminus A$ , 其包含 $x$ 的某个闭邻域 $U_{0}$ , 显然 $X\setminus U_{0}$ 是 $A$ 的开邻域, 并且 $U_{0}\cap(X\setminus U_{0})=\varnothing$ , 从而这就是我们要找的 $U_{x}$ 和 $U_{A}$ .
+        <!--end-->
+- $X$ 是正规的, 当且仅当
+    - 对任意闭集 $A\subseteq X$ , $A$ 的每个邻域 $U$ 都包含 $A$ 的某个闭邻域 $U'$ .
+        <!--begin-->
+        - **证明 正规$\implies$该条件**
+        根据定义, $A$ 的邻域 $U$ 必定包含 $A$ 的开邻域 $U_{0}$ , 对 $A$ 和闭集 $X\setminus U_{0}$ 应用正规性, 可以分别得到 $A$ 和 $X\setminus U_{0}$ 的开邻域 $U_{1}$ 和 $U_{2}$ 使得 $U_{1}\cap U_{2}=\varnothing$ , 显然 $X\setminus U_{2}$ 是 $A$ 的闭邻域, 接下来我们证明其包含于 $U$ , 从而这就是我们要找的 $U'$ . 对任意 $y\in X\setminus U_{2}$ , 因为 $X\setminus U_{0}\subseteq U_{2}$ , 所以 $y\in U_{0}$ , 进一步可得 $y\in U$ , 这就完成了证明.
+        - **证明 该条件$\implies$正规**
+        对任意不相交的闭集 $A,B\subseteq X$ , 考虑 $A$ 的开邻域 $X\setminus B$ , 其包含 $A$ 的某个闭邻域 $U_{0}$ , 显然 $X\setminus U_{0}$ 是 $B$ 的开邻域, 并且 $U_{0}\cap(X\setminus U_{0})=\varnothing$ , 从而这就是我们要找的 $U_{A}$ 和 $U_{B}$ .
+        <!--end-->
 
 **定理（Urysohn 引理）**
 设 $X$ 是正规空间, 则 $X$ 的
@@ -593,14 +707,14 @@ $X$ 的商空间 $(\widetilde{X},\tau_{\sim})$ 是拓扑空间, 其中 $\widetil
 - 任何完全正则空间的积空间都是完全正则的.
 - 任何 Tychonoff 空间的积空间都是 Tychonoff 的.
 
-> 我们知道 Sorgenfrey 直线是 T~6~ 空间, 但 Sorgenfrey 平面不是正规的, 这为正规/完全正规/完美正规/ T~4~ / T~5~ / T~6~ 空间的积空间的分离性提供了反例.
+> [Sorgenfrey 直线](#R^n上的拓扑#上/下限拓扑(Sorgenfrey直线))是 T~6~ 空间, 但 [Sorgenfrey 平面](#补充#Sorgenfrey平面)不是正规的, 这为正规/完全正规/完美正规/ T~4~ / T~5~ / T~6~ 空间的积空间的分离性提供了反例.
 
-> 并不是所有 Hausdorff 空间的商空间都是 Hausdorff 的, 例如在空间 $X=\mathbf{R}\times\{0,1\}$ 中规定 $$\forall\ x\in\mathbf{R}_{>0}\quad:\quad(x,0)\sim(x,1)\ .$$ 此时任何 $(0,0)$ 和 $(0,1)$ 的等价类的邻域都会包含某个 $(x,0)$ 的等价类, 从而该商空间不是 Hausdorff 的.
+> 一般来说, 拓扑空间的分离性无法在商空间中保持, 下面我们将通过一个例子证明 Hausdorff 空间的商空间不一定是 Hausdorff 的. 在空间 $X=\mathbf{R}\times\{0,1\}$ 中规定 $$\forall\ x\in\mathbf{R}_{>0}\quad:\quad(x,0)\sim(x,1)\ .$$ 此时任何 $(0,0)$ 和 $(0,1)$ 的等价类的邻域都会包含某个 $(x,0)$ 的等价类, 从而该商空间不是 Hausdorff 的.
+
+#### 特殊化序 {#拓扑不变量#分离性#特殊化序}
 
 下面我们给出特殊化序的定义, 作为一种预序关系, 其反映了拓扑空间中两点的附着关系, T~0~ 至 T~1~ 的目标是逐渐实现 $x\notin\overline{\{y\}}$ 和 $y\notin\overline{\{x\}}$ 的同时成立, 从而使 $\{x\}$ 与 $\{y\}$ 可分离.
 
-#### 特殊化序 {#拓扑不变量#分离性#特殊化序}
- 
 **定义（特殊化序）**
 拓扑空间 $X$ 上的**特殊化序**定义为二元关系 $$x\preceq
  y:=x\in\overline{\{y\}}\ .$$
@@ -619,15 +733,17 @@ $X$ 上的特殊化序是预序关系, 即满足
 
 - 设 $X$ 是 Fréchet 空间, 则 $X$ 上的特殊化序退化为相等关系, 即 $$\forall\ x,y\in X\quad:\quad x\preceq y\implies x=y\ .$$
 
-**定理（开集与闭集）**
+**定理（开集与闭集对特殊化序封闭）**
 对任意 $x,y\in X$ 和 $A\subseteq X$ , 若 $x\preceq y$ 且
 
-- $A$ 是开的, 则 $$x\in A\implies y\in A\ .$$
-- $A$ 是闭的, 则 $$y\in A\implies x\in A\ .$$
+- $A$ 是开集, 则 $$x\in A\implies y\in A\ .$$
+- $A$ 是闭集, 则 $$y\in A\implies x\in A\ .$$
 
+<!--begin-->
 **证明**
-- 若 $A$ 是开的, 则 $x$ 为 $A$ 的内点, 从而存在某个 $x$ 的开邻域包含于 $A$ , 而 $x\preceq y$ 表明任何 $x$ 的开邻域都包含 $y$ , 因此 $y\in A$ .
-- 若 $A$ 是闭的, 则 $x\in\overline{\{y\}}$ 表明 $x$ 作为 $A$ 中元素的极限点, 于是 $x\in\overline{A}$ , 这就得到了 $x\in A$ .
+- 若 $A$ 是开集, 则 $x$ 为 $A$ 的内点, 从而存在某个 $x$ 的开邻域包含于 $A$ , 而 $x\preceq y$ 表明任何 $x$ 的开邻域都包含 $y$ , 因此 $y\in A$ .
+- 若 $A$ 是闭集, 则 $x\in\overline{\{y\}}$ 表明 $x$ 作为 $A$ 中元素的极限点, 于是 $x\in\overline{A}$ , 这就得到了 $x\in A$ .
+<!--end-->
 
 #### Kolmogorov 商 {#拓扑不变量#分离性#Kolmogorov商}
 
@@ -642,7 +758,7 @@ $X$ 上的特殊化序是预序关系, 即满足
 #### 定义 {#拓扑不变量#可数性#定义}
 
 **定义（第一可数性）**
-称拓扑空间 $X$ 是**第一可数**的, 当且仅当对任意 $x\in X$ 都存在某个 $x$ 的可数邻域基.
+称拓扑空间 $X$ 是**第一可数**的, 当且仅当对任意 $x\in X$ 都存在某个 $x$ 的至多可数的邻域基.
 
 **定义（第二可数性）**
 称拓扑空间 $(X,\tau)$ 是**第二可数**的, 当且仅当存在 $\tau$ 的某个至多可数的基.
@@ -651,10 +767,13 @@ $X$ 上的特殊化序是预序关系, 即满足
 称拓扑空间 $X$ 是**可分**的, 当且仅当存在某个 $X$ 的至多可数的稠密子集.
 
 **定义（Lindelöf 性）**
-称拓扑空间 $X$ 是 **Lindelöf** 的, 当且仅当对任意满足 $$\bigcup_{A\in\mathcal{A}}A=X$$ 的 $\mathcal{A}\subseteq\tau$ , 都存在可数族 $\mathcal{A}'\subseteq\mathcal{A}$ 使得 $$\bigcup_{A\in\mathcal{A}'}A=X\ .$$
+称拓扑空间 $X$ 是 **Lindelöf** 的, 当且仅当对任意满足 $$\bigcup_{A\in\mathcal{A}}A=X$$ 的 $\mathcal{A}\subseteq\tau$ , 都存在至多可数族 $\mathcal{A}'\subseteq\mathcal{A}$ 使得 $$\bigcup_{A\in\mathcal{A}'}A=X\ .$$
 
-我们将上面定义中的 $\mathcal{A}$ 称为 $X$ 的开覆盖, 而 $\mathcal{A}'$ 称为 $\mathcal{A}$ 的可数子覆盖, 由此紧性的定义可以被描述为:
-> 称拓扑空间 $X$ 是 **Lindelöf** 的, 当且仅当 $X$ 的任意开覆盖都存在某个可数子覆盖.
+我们将上面定义中的 $\mathcal{A}$ 称为 $X$ 的开覆盖, 而 $\mathcal{A}'$ 称为 $\mathcal{A}$ 的至多可数子覆盖, 由此紧性的定义可以被描述为:
+> 称拓扑空间 $X$ 是 **Lindelöf** 的, 当且仅当 $X$ 的任意开覆盖都存在某个至多可数子覆盖.
+
+**推论（紧$\implies$Lindelöf）**
+任何紧空间都是 Lindelöf 的.
 
 #### 判定准则 {#拓扑不变量#可数性#判定准则}
 
@@ -672,39 +791,45 @@ $X$ 上的特殊化序是预序关系, 即满足
 #### 特性 {#拓扑不变量#可数性#特性}
 
 **定理（可数性关系）**
+
 - 任何第二可数空间都是第一可数空间.
-- 任何第二可数空间都是可分的.
-- 任何第二可数空间都是 Lindelöf 的.
-- 任何可度量化的可分空间都是第二可数的.
-- 任何可度量化的 Lindelöf 空间都是第二可数的.
+- **~AC~** 任何第二可数空间都是可分的.
+- **~AC~** 任何第二可数空间都是 Lindelöf 的.
+
+<!--begin-->
+**证明**
+- 设 $X$ 是第二可数空间, 并且 $\mathcal{B}$ 是其拓扑的至多可数的基. 对任意 $x\in X$ , 置 $$\mathcal{B}_{x}=\{B\in\mathcal{B}\ |\ x\in B\}\ ,$$ 因为任何 $x$ 的邻域 $N$ 都包含一个 $x$ 的开邻域 $A_{x}$ , 而根据基的定义, 开集 $A_{x}$ 必定包含 $\mathcal{B}_{x}$ 中的某个元素 $B$ , 从而 $x$ 的任何邻域都包含 $x$ 的邻域系的子集 $\mathcal{B}_{x}$ 中的某个元素, 这表明 $\mathcal{B}_{x}$ 是 $x$ 的至多可数的邻域基.
+- 设 $X$ 是第二可数空间, 并且集族 $\{B_{i}\}_{i\in I}$ 是其拓扑的基, 其中 $I$ 是至多可数集. 在每个 $B_{i}$ 中选取 $x_{i}$ 构成集合 $A$ , 则有 $\overline{A}=X$ 成立, 这是因为对任意 $x\in X$ 及其任意开邻域 $N_{x}$ , $N_{x}$ 必定包含基 $\{B_{i}\}_{i\in I}$ 中的元素, 从而对应的 $x_{i}$ 必定属于 $N_{x}$ , 即 $N_{x}$ 与 $A$ 相交.
+- 设 $X$ 是第二可数空间, 并且集族 $\{B_{i}\}_{i\in I}$ 是其拓扑的基, 其中 $I$ 是至多可数集. 给定任意 $X$ 的开覆盖 $\{A_{j}\}_{j\in J}$ , 对每个 $B_{i}$ , 若存在则选取使得 $B_{i}\subseteq A_{i}$ 成立的 $A_{i}$ 构成集合 $\mathcal{A}$ , 显然 $\mathcal{A}$ 是至多可数的, 下面我们证明任何 $x\in X$ 都属于 $\mathcal{A}$ 的某个元素, 从而 $\mathcal{A}$ 是 $\{A_{j}\}_{j\in J}$ 的至多可数子覆盖. 首先由 $\{A_{j}\}_{j\in J}$ 是 $X$ 的开覆盖知 $x$ 属于其中某个开集 $A_{x}$ , 我们可以找到某个 $B_{x}$ 使得 $x\in B_{x}$ 且 $B_{x}\subseteq A_{x}$ , 于是 $\mathcal{A}$ 中存在由 $B_{x}$ 而确定的元素 $A$ , 进一步由 $B_{x}\subseteq A$ 确保了 $x\in A$ .
+<!--end-->
+
+> 引入[度量空间](#度量空间)后我们将看到: 如果可分空间/ Lindelöf 空间 $X$ 是可度量化的, 那么其是第二可数的, 从而将具有更多良好的性质.
 
 **定理（子空间的可数性）**
 - 任何第一可数空间的子空间都是第一可数的.
 - 任何第二可数空间的子空间都是第二可数的.
 - 设 $X$ 是 Lindelöf 空间, $A\subseteq X$ 是闭集, 则子空间 $A$ 是 Lindelöf 的.
 
-注意, 对于不可度量化的可分空间, 其子空间可能不可分.
+> [Sorgenfrey 直线](#R^n上的拓扑#上/下限拓扑(Sorgenfrey直线))是 Lindelöf 空间, 但 [Sorgenfrey 平面](#补充#Sorgenfrey平面)不是 Lindelöf 的, 这表明 Lindelöf 空间的积空间不一定是 Lindelöf 的.
 
 **定理（积空间的可数性）**
-- 设对任意指标 $i\in I$ , $(X_{i},\tau_{i})$ 都是非空拓扑空间, 则积空间 $\prod_{i\in I}X_{i}$ 是第一可数的当且仅当
-    - 存在至多可数指标集 $I'\subseteq I$ 使得对任意 $i\in I'$ 都有 $X_{i}$ 是第一可数的
+- 设对任意指标 $i\in I$ , $(X_{i},\tau_{i})$ 都是非空拓扑空间, 则积空间 $\prod_{i\in I}X_{i}$ 是第一可数的当且仅当存在至多可数指标集 $I'\subseteq I$ 使得
+    - 对任意 $i\in I'$ 都有 $X_{i}$ 是第一可数的
       且
     - 对任意 $i\in I\setminus I'$ 都有 $\tau_{i}$ 是平凡拓扑.
-- 设对任意指标 $i\in I$ , $(X_{i},\tau_{i})$ 都是非空拓扑空间, 则积空间 $\prod_{i\in I}X_{i}$ 是第二可数的当且仅当
-    - 存在至多可数指标集 $I'\subseteq I$ 使得对任意 $i\in I'$ 都有 $X_{i}$ 是第二可数的
+- 设对任意指标 $i\in I$ , $(X_{i},\tau_{i})$ 都是非空拓扑空间, 则积空间 $\prod_{i\in I}X_{i}$ 是第二可数的当且仅当存在至多可数指标集 $I'\subseteq I$ 使得
+    - 对任意 $i\in I'$ 都有 $X_{i}$ 是第二可数的
       且
     - 对任意 $i\in I\setminus I'$ 都有 $\tau_{i}$ 是平凡拓扑.
 - 设 $X$ 和 $Y$ 是可分空间, 则积空间 $X\times Y$ 是可分的.
-- 设 $X$ 和 $Y$ 是 Lindelöf 空间, 则积空间 $X\times Y$ 是 Lindelöf 的.
 
-**推论（紧$\implies$Lindelöf）**
-任何紧空间都是 Lindelöf 的.
+> [Sorgenfrey 直线](#R^n上的拓扑#上/下限拓扑(Sorgenfrey直线))是 Lindelöf 空间, 但 [Sorgenfrey 平面](#补充#Sorgenfrey平面)不是 Lindelöf 的, 这表明 Lindelöf 空间的积空间不一定是 Lindelöf 的.
 
 **定理（Lindelöf 性的等价条件）**
-$X$ 是 Lindelöf 的当且仅当对任意满足 $$\bigcap_{A\in\mathcal{A}}A=\varnothing$$ 的闭集族 $\mathcal{A}$ , 都存在可数族 $\mathcal{A}'\subseteq\mathcal{A}$ 使得 $$\bigcap_{A\in\mathcal{A}}A=\varnothing\ .$$
+$X$ 是 Lindelöf 的当且仅当对任意满足 $$\bigcap_{A\in\mathcal{A}}A=\varnothing$$ 的闭集族 $\mathcal{A}$ , 都存在至多可数族 $\mathcal{A}'\subseteq\mathcal{A}$ 使得 $$\bigcap_{A\in\mathcal{A}}A=\varnothing\ .$$
 
-我们将上面定义中的 $\mathcal{A}$ 称为 $X$ 的闭无交族, 而 $\mathcal{A}'$ 称为 $\mathcal{A}$ 的可数子无交族, 由此 Lindelöf 性的定义又可以被对偶地描述为:
-> 称拓扑空间 $X$ 是 **Lindelöf** 的, 当且仅当 $X$ 的任意闭无交族都存在某个可数子无交族.
+我们将上面等价条件中的 $\mathcal{A}$ 称为 $X$ 的闭无交族, 而 $\mathcal{A}'$ 称为 $\mathcal{A}$ 的至多可数子无交族, 由此 Lindelöf 性的定义又可以被对偶地描述为:
+> 称拓扑空间 $X$ 是 **Lindelöf** 的, 当且仅当 $X$ 的任意闭无交族都存在某个至多可数子无交族.
 
 **定理（正则 Lindelöf$\implies$正规）**
 设 $X$ 是正则 Lindelöf 空间, 则 $X$ 是正规的.
@@ -797,7 +922,7 @@ $X$ 是连通的当且仅当
 **定理（紧性的等价条件）**
 $X$ 是紧的当且仅当对任意满足 $$\bigcap_{A\in\mathcal{A}}A=\varnothing$$ 的闭集族 $\mathcal{A}$ , 都存在 $A_{1},\cdots,A_{n}\in\mathcal{A}$ 使得 $$\bigcap_{k=1}^{n}A_{k}=\varnothing\ .$$
 
-我们将上面定义中的 $\mathcal{A}$ 称为 $X$ 的闭无交族, 而 $A_{1},\cdots,A_{n}$ 称为 $\mathcal{A}$ 的有限子无交族, 由此紧性的定义又可以被对偶地描述为:
+我们将上面等价条件中的 $\mathcal{A}$ 称为 $X$ 的闭无交族, 而 $A_{1},\cdots,A_{n}$ 称为 $\mathcal{A}$ 的有限子无交族, 由此紧性的定义又可以被对偶地描述为:
 > 称拓扑空间 $X$ 是**紧**的, 当且仅当 $X$ 的任意闭无交族都存在某个有限子无交族.
 
 **定理（闭子空间的紧性）**
@@ -821,8 +946,6 @@ $X$ 是紧的当且仅当对任意满足 $$\bigcap_{A\in\mathcal{A}}A=\varnothin
 
 ---
 
----
-
 ## 度量空间 {#度量空间}
 
 现在我们定义度量空间, 每一种度量都能诱导出对应的拓扑空间.
@@ -836,9 +959,19 @@ $X$ 是紧的当且仅当对任意满足 $$\bigcap_{A\in\mathcal{A}}A=\varnothin
 - 对称性: $$\forall\ x,y\in X\quad:\quad d(x,y)=d(y,x)\ ;$$
 - 三角不等式: $$\forall\ x,y,z\in X\quad:\quad d(x,z)\leqslant d(x,y)+d(y,z)\ .$$
 
-**定义（离散度量空间）**
+**定义（离散度量）**
 
 **定理（有限度量空间是离散度量空间）**
+
+**「度量空间」的约定**
+在不引发歧义的情况下, 一般我们用集合符号来代表度量空间, 即 $X$ 代表 $(X,d)$ .
+
+---
+
+### 基本概念 {#度量空间#基本概念}
+
+**定义（集合的直径）**
+设 $X$ 是度量空间, 则 $A\subseteq X$ 的直径定义为 $$\operatorname{diam}A:=\sup\{d(x,y)\ |\ x,y\in A\}\ .$$
 
 ---
 
@@ -850,16 +983,22 @@ $X$ 是紧的当且仅当对任意满足 $$\bigcap_{A\in\mathcal{A}}A=\varnothin
 **定理（度量空间诱导拓扑空间）**
 设 $(X,d)$ 是度量空间, 则 $$\mathcal{B}_{d}:=\{B_{r}(x)\ |\ x\in X,r>0\}$$ 是 $X$ 上的基, 其生成的拓扑称为度量 $d$ 诱导的拓扑.
 
+注意, 并不是每个拓扑空间都可由度量空间所诱导, 例如考虑至少有两个元素的有限集 $X$ , 其上的平凡拓扑 $\tau_{T}$ 就不能被任何度量空间诱导, 因为任何有限度量空间 $(X,d)$ 只能诱导离散拓扑空间并且 $X$ 上的离散拓扑不可能是平凡拓扑. 这就表明我们无法在一般的拓扑空间上考虑度量.
+
 **定理（离散度量空间诱导离散拓扑空间）**
 设 $(X,d)$ 是离散度量空间, 则度量 $d$ 诱导的拓扑为 $2^{X}$ .
 
-注意, 并不是每个拓扑空间都可由度量空间所诱导, 例如考虑至少有两个元素的有限集 $X$ , 其上的平凡拓扑 $\tau_{T}$ 就不能被任何度量空间诱导, 因为任何有限度量空间 $(X,d)$ 只能诱导离散拓扑空间并且 $X$ 上的离散拓扑不可能是平凡拓扑. 这就表明我们无法在一般的拓扑空间上考虑度量.
+**定义（标准有界度量）**
+设 $(X,d)$ 是度量空间, 则 $d$ 的标准有界度量定义为 $$\overline{d}:(x,y)\mapsto\min\{1,d(x,y)\}\ .$$
+
+**定理（标准有界度量诱导的拓扑）**
+任何度量与其标准有界度量诱导的拓扑相同.
 
 **定理（分离性）**
 任何度量空间诱导的拓扑空间都是完美正规的.
 
 **定理（可数性）**
-任何度量空间诱导的拓扑空间都是第一可数的.
+任何度量空间诱导的拓扑空间都是第一可数的, 如果其是可分的或 Lindelöf 的, 则进一步是第二可数的.
 
 **定理（子空间的可分性）**
 对于任何度量空间诱导的可分空间, 其子空间都是可分的.
@@ -868,7 +1007,7 @@ $X$ 是紧的当且仅当对任意满足 $$\bigcap_{A\in\mathcal{A}}A=\varnothin
 
 ### 默认拓扑的一致性 {#度量空间#默认拓扑的一致性}
 
-现在我们来考虑由度量空间的子空间. 设 $X$ 是度量空间诱导的拓扑空间, 对于任意 $A\subseteq X$ : 一方面, 我们希望仍然采用一般拓扑空间的子拓扑来赋予 $A$ 拓扑结构; 另一方面, 我们希望保留原有的度量, 将其限制在 $A$ 上形成子度量空间, 再进一步诱导出拓扑结构.我们将要证明, 这两种想法是互相兼容的——无论采用哪一种策略, $A$ 都将被赋予相同的拓扑结构.
+现在我们来考虑由度量空间的子空间. 设 $X$ 是度量空间诱导的拓扑空间, 对于任意 $A\subseteq X$ : 一方面, 我们希望仍然采用一般拓扑空间的子拓扑来赋予 $A$ 拓扑结构; 另一方面, 我们希望保留原有的度量, 将其限制在 $A$ 上形成子度量空间, 再进一步诱导出拓扑结构. 我们将要证明, 这两种想法是互相兼容的——无论采用哪一种策略, $A$ 都将被赋予相同的拓扑结构.
 
 **定理（子度量空间诱导的拓扑$\iff$诱导拓扑空间的子拓扑）**
 
@@ -878,14 +1017,19 @@ $X$ 是紧的当且仅当对任意满足 $$\bigcap_{A\in\mathcal{A}}A=\varnothin
 
 ---
 
----
-
 ## $\mathbf{R}^{n}$ 上的拓扑 {#R^n上的拓扑}
 
-### 通常拓扑 {#R^n上的拓扑#通常拓扑}
+### 标准拓扑 {#R^n上的拓扑#标准拓扑}
+
+**定义（Euclid 度量）**
+
+**定义（平方度量）**
+
+**定理（$\mathbf{R}^{n}$ 上标准拓扑的一致性）**
+
 
 **定理（$\mathbf{R}^{n}$ 是第二可数的）**
-设 $n$ 是正整数, 则 $(\mathbf{R}^{n},\tau_{\mathbf{R}})$ 是第二可数的, 其中 $\tau_{\mathbf{R}}$ 是 $\mathbf{R}^{n}$ 上的通常拓扑.
+设 $n$ 是正整数, 则 $(\mathbf{R}^{n},\tau_{\mathbf{R}})$ 是第二可数的, 其中 $\tau_{\mathbf{R}}$ 是 $\mathbf{R}^{n}$ 上的标准拓扑.
 
 下面的定理给出了在 $\mathbf{R}^{n}$ 上紧性的重要判定准则.
 
@@ -896,25 +1040,28 @@ $X$ 是紧的当且仅当对任意满足 $$\bigcap_{A\in\mathcal{A}}A=\varnothin
 
 ### 上/下限拓扑 ( Sorgenfrey 直线 ) {#R^n上的拓扑#上/下限拓扑(Sorgenfrey直线)}
 
+**定义（$\mathbf{R}^{n}$上的上/下拓扑）**
+
+**定理（上/下拓扑严格细于标准拓扑）**
+
 ---
 
 ### K-拓扑 {#R^n上的拓扑#K-拓扑}
 
----
+**定义（$\mathbf{R}^{n}$上的K-拓扑）**
+
+**定理（K-拓扑严格细于标准拓扑）**
 
 ---
 
-## 补充
+## 补充 {#补充}
 
----
+### Sorgenfrey 平面 {#补充#Sorgenfrey平面}
 
 ---
 
 ## 参考文献
 
-排序区分参考时间先后
-
-[1] Allen Hatcher. Notes on Introductory Point-Set Topology[OL]. https://pi.math.cornell.edu/~hatcher/Top/TopNotes.pdf.
-[2] Maki’s Lab 拓扑学委员会. 拓扑学讲义[OL]. September 30, 2022. https://maki-lab-oss.oss-cn-shanghai.aliyuncs.com/auto/3b643ec3e4c44097be4f9c2ffae3bd2c.pdf.
-[3] 熊⾦城. 点集拓扑讲义[M]. 第5版. 北京: 高等教育出版社, 2020. ISBN 978-7-04-053617-1.
-[4] James R. Munkres. Topology[M]. 2nd ed. Upper Saddle River , NJ: Prentice Hall, 2000. ISBN 0-13-181629-2.
+[1] James R. Munkres. Topology[M]. 2nd ed. Upper Saddle River , NJ: Prentice Hall, 2000. ISBN 0-13-181629-2.
+[2] 熊⾦城. 点集拓扑讲义[M]. 第5版. 北京: 高等教育出版社, 2020. ISBN 978-7-04-053617-1.
+[3] Allen Hatcher. Notes on Introductory Point-Set Topology[OL]. https://pi.math.cornell.edu/~hatcher/Top/TopNotes.pdf.
