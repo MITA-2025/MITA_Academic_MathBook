@@ -1,6 +1,6 @@
 # MITA 数学讲义 点集拓扑
-## Notes on General Topology
+### Notes on General Topology
 
 **Contributor**
 
-- 周可信 2024级
+- JokerXin 周可信 2024级
