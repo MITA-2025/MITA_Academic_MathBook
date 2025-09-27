@@ -2,7 +2,7 @@
 
 ---
 
-### 点集拓扑 General Topology
+### 拓扑 General Topology
 
 **Last Updated**
 
